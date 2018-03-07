@@ -4,12 +4,28 @@ import Order from './Order';
 import Inventory from './Inventory';
 import sampleFishes from '../sample-fishes';
 import Fish from './Fish';
+import base from '../base';
 
 class App extends Component {
   state = {
     fishes: {},
     order: {},
   };
+
+  componentDidMount(){
+    // here we are mirroring our state over to what is our firebase
+    const { params } = this.props.match; // destructure props from router
+    
+    // below we sync it not to the entire db but the name of the store
+    this.ref = base.syncState(`${params.storeId}/fishes`, {   // this.ref in Firebase is a reference to a piece of data in the db
+      context: this,
+      state: 'fishes'
+    });
+  }
+
+  componentWillUnmount(){
+    base.removeBinding(this.ref); // unlisten to changes
+  }
 
   addFish = fish => {
     const fishes = { ...this.state.fishes } // makes copy of existing state
