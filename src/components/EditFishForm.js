@@ -1,6 +1,14 @@
 import React from 'react';
 
 class EditFishForm extends React.Component {
+  handleChange = e => {
+    // update that fish
+    const updateFish = { 
+      ...this.props.fish, // make copy of the current fish
+      [e.currentTarget.name]: e.currentTarget.value // overwrite the one thing that changed using ES6 computed property names []
+    };
+    console.log(updateFish);
+  }
   render() {
     return (
       <div className="fish-edit">
