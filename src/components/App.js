@@ -15,12 +15,23 @@ class App extends Component {
   componentDidMount(){
     // here we are mirroring our state over to what is our firebase
     const { params } = this.props.match; // destructure props from router
+
+    const localStorageRef = localStorage.getItem(params.storeId);  // First reinstate our localStorage
+    if(localStorageRef) {
+      this.setState({ order: JSON.parse(localStorageRef) })
+    }
     
     // below we sync it not to the entire db but the name of the store
     this.ref = base.syncState(`${params.storeId}/fishes`, {   // this.ref in Firebase is a reference to a piece of data in the db
       context: this,
       state: 'fishes'
     });
+  }
+  
+  componentDidUpdate(){
+    localStorage.setItem(
+      this.props.match.params.storeId, 
+      JSON.stringify(this.state.order));
   }
 
   componentWillUnmount(){
