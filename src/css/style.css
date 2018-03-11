@@ -13,10 +13,10 @@
   padding: 2rem 0 !important;
 }
 .order-exit {
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
   -webkit-transform: translateX(0);
           transform: translateX(0);
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 .order-exit.order-exit-active {
   -webkit-transform: translateX(120%);
@@ -47,8 +47,8 @@
 }
 .count-exit.count-exit-active {
   background: #008000;
-  -webkit-transform: translateY(-100%) scale(3);
-          transform: translateY(-100%) scale(3);
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
 }
 @font-face {
   font-family: "haymakerregular";
