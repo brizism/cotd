@@ -4,7 +4,7 @@ import AddFishForm from './AddFishForm';
 import EditFishForm from './EditFishForm';
 import Login from './Login';
 import firebase from 'firebase';
-import { firebaseApp } from '../base';
+import base, { firebaseApp } from '../base';
 
 class Inventory extends Component {
   static propTypes = {
@@ -14,8 +14,27 @@ class Inventory extends Component {
     loadSampleFishes: PropTypes.func
   }
 
+  state = {
+    uid: null,
+    owner: null
+  }
+
   authHandler = async (authData) => {
-    console.log(authData);
+    // Look up the current store in the firebase database
+    const store = await base.fetch(this.props.storeId, { context: this});
+    console.log(store);
+    // claim it if there is no owner
+    if(!store.owner) {
+      // save it as our own
+      await base.post(`${this.props.storeId}/owner`, {
+        data: authData.user.uid
+      })
+    }
+    // set the state of the inventory component to reflect the current user
+    this.setState({
+      uid: authData.user.uid,
+      owner: store.owner || authData.useer.uid
+    })
   }
 
   authenticate = provider => {
